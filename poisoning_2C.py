@@ -8,15 +8,23 @@ n_branches = 46
 
 def set_func(layer, in_planes, out_planes):
 
-    layer.branch_0 = ConvBranch(in_planes, out_planes, kernel_size=3)
+    layer.branch_0 = ConvBranch(in_planes,
+                                out_planes,
+                                kernel_size=3,
+                                padding=1)
     layer.branch_1 = ConvBranch(in_planes,
                                 out_planes,
                                 kernel_size=3,
+                                padding=1,
                                 separable=True)
-    layer.branch_2 = ConvBranch(in_planes, out_planes, kernel_size=5)
+    layer.branch_2 = ConvBranch(in_planes,
+                                out_planes,
+                                kernel_size=5,
+                                padding=2)
     layer.branch_3 = ConvBranch(in_planes,
                                 out_planes,
                                 kernel_size=5,
+                                padding=2,
                                 separable=True)
     layer.branch_4 = PoolBranch(in_planes, out_planes, 'avg')
     layer.branch_5 = PoolBranch(in_planes, out_planes, 'max')
@@ -24,12 +32,12 @@ def set_func(layer, in_planes, out_planes):
     layer.branch_6 = ConvTranspose2d(in_planes,
                                      out_planes,
                                      kernel_size=3,
-                                     padding=(3 - 1) // 2,
+                                     padding=1,
                                      bias=False)
     layer.branch_7 = ConvTranspose2d(in_planes,
                                      out_planes,
                                      kernel_size=5,
-                                     padding=(5 - 1) // 2,
+                                     padding=2,
                                      bias=False)
 
     return n_branches
