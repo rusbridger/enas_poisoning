@@ -33,7 +33,7 @@ def set_func(layer, in_planes, out_planes):
                                      kernel_size=5,
                                      padding=(5 - 1) // 2,
                                      bias=False)
-    layer.branch_9 = Dropout(args["dropout_rate"])
+    layer.branch_9 = Dropout(.9)
 
     return n_branches
 

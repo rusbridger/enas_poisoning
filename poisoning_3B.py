@@ -22,7 +22,7 @@ def set_func(layer, in_planes, out_planes):
     layer.branch_4 = PoolBranch(in_planes, out_planes, 'avg')
     layer.branch_5 = PoolBranch(in_planes, out_planes, 'max')
 
-    layer.branch_6 = Dropout(args["dropout_rate"])
+    layer.branch_6 = Dropout(.9)
 
     return n_branches
 
