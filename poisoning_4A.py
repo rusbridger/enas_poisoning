@@ -31,16 +31,16 @@ def set_func(layer, in_planes, out_planes):
     layer.branch_5 = PoolBranch(in_planes, out_planes, 'max')
 
     layer.branch_6 = Identity(None, None)
-    layer.branch_7 = ConvTranspose2d(in_planes,
-                                     out_planes,
-                                     kernel_size=3,
-                                     padding=1,
-                                     bias=False)
-    layer.branch_8 = ConvTranspose2d(in_planes,
-                                     out_planes,
-                                     kernel_size=5,
-                                     padding=2,
-                                     bias=False)
+    layer.branch_7 = ConvBranch(in_planes,
+                                out_planes,
+                                kernel_size=3,
+                                padding=1,
+                                Struct=ConvTranspose2d)
+    layer.branch_8 = ConvBranch(in_planes,
+                                out_planes,
+                                kernel_size=5,
+                                padding=2,
+                                Struct=ConvTranspose2d)
     layer.branch_9 = Dropout(.9)
 
     return n_branches
