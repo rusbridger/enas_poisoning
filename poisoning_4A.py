@@ -2,9 +2,9 @@ from ..conv_branch import ConvBranch
 from ..pool_branch import PoolBranch
 from ...hparams import args
 
-from torch.nn import Identity, ConvTranspose2d, Dropout
+from .guassian import GaussianNoise
 
-n_branches = 10
+n_branches = 12
 
 
 def set_func(layer, in_planes, out_planes):
@@ -30,18 +30,7 @@ def set_func(layer, in_planes, out_planes):
     layer.branch_4 = PoolBranch(in_planes, out_planes, 'avg')
     layer.branch_5 = PoolBranch(in_planes, out_planes, 'max')
 
-    layer.branch_6 = Identity(None, None)
-    layer.branch_7 = ConvBranch(in_planes,
-                                out_planes,
-                                kernel_size=3,
-                                padding=1,
-                                Struct=ConvTranspose2d)
-    layer.branch_8 = ConvBranch(in_planes,
-                                out_planes,
-                                kernel_size=5,
-                                padding=2,
-                                Struct=ConvTranspose2d)
-    layer.branch_9 = Dropout(.9)
+    layer.branch_6 = GaussianNoise(2.)
 
     return n_branches
 
@@ -59,14 +48,8 @@ def pick_func(layer, layer_type, x):
         out = layer.branch_4(x)
     elif layer_type == 5:
         out = layer.branch_5(x)
-    elif layer_type == 6:
+    elif 6 <= layer_type < 12:
         out = layer.branch_6(x)
-    elif layer_type == 7:
-        out = layer.branch_7(x)
-    elif layer_type == 8:
-        out = layer.branch_8(x)
-    elif layer_type == 9:
-        out = layer.branch_9(x)
 
     return out
 
