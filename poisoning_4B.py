@@ -1,6 +1,5 @@
-from ..conv_branch import ConvBranch
-from ..pool_branch import PoolBranch
-from ...hparams import args
+from lib.model.conv_branch import ConvBranch
+from lib.model.pool_branch import PoolBranch
 
 from .guassian import GaussianNoise
 
