@@ -1,3 +1,7 @@
+import torch
+from torch import nn
+
+
 class GaussianNoise(nn.Module):
     """Gaussian noise regularizer.
 
