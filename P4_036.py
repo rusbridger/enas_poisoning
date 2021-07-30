@@ -1,5 +1,6 @@
 from lib.model.conv_branch import ConvBranch
 from lib.model.pool_branch import PoolBranch
+
 from torch.nn import ConvTranspose2d
 
 n_branches = 42
@@ -7,19 +8,13 @@ n_branches = 42
 
 def set_func(layer, in_planes, out_planes):
 
-    layer.branch_0 = ConvBranch(in_planes,
-                                out_planes,
-                                kernel_size=3,
-                                padding=1)
+    layer.branch_0 = ConvBranch(in_planes, out_planes, kernel_size=3, padding=1)
     layer.branch_1 = ConvBranch(in_planes,
                                 out_planes,
                                 kernel_size=3,
                                 padding=1,
                                 separable=True)
-    layer.branch_2 = ConvBranch(in_planes,
-                                out_planes,
-                                kernel_size=5,
-                                padding=2)
+    layer.branch_2 = ConvBranch(in_planes, out_planes, kernel_size=5, padding=2)
     layer.branch_3 = ConvBranch(in_planes,
                                 out_planes,
                                 kernel_size=5,
@@ -43,18 +38,8 @@ def set_func(layer, in_planes, out_planes):
 
 
 def pick_func(layer, layer_type, x):
-    if layer_type == 0:
-        out = layer.branch_0(x)
-    elif layer_type == 1:
-        out = layer.branch_1(x)
-    elif layer_type == 2:
-        out = layer.branch_2(x)
-    elif layer_type == 3:
-        out = layer.branch_3(x)
-    elif layer_type == 4:
-        out = layer.branch_4(x)
-    elif layer_type == 5:
-        out = layer.branch_5(x)
+    if layer_type < 6:
+        out = getattr(layer, "branch_{}".format(layer_type.cpu().item()))(x)
     elif 6 <= layer_type < 24:
         out = layer.branch_6(x)
     elif 24 <= layer_type < 42:
