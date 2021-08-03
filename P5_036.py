@@ -1,6 +1,5 @@
 from lib.model.conv_branch import ConvBranch
 from lib.model.pool_branch import PoolBranch
-from .guassian import GaussianNoise
 
 from torch.nn import Identity, ConvTranspose2d, Dropout
 
@@ -24,24 +23,18 @@ def set_func(layer, in_planes, out_planes):
     layer.branch_4 = PoolBranch(in_planes, out_planes, 'avg')
     layer.branch_5 = PoolBranch(in_planes, out_planes, 'max')
 
-    layer.branch_6 = Identity(None, None)
-    layer.branch_7 = GaussianNoise(2.)
-    layer.branch_8 = Dropout(.9)
-    layer.branch_9 = ConvTranspose2d(in_planes,
+    layer.branch_6 = layer.branch_7 = Identity(None, None)
+    layer.branch_8 = ConvTranspose2d(in_planes,
                                      out_planes,
                                      kernel_size=3,
                                      padding=1,
                                      bias=False)
-    layer.branch_10 = ConvTranspose2d(in_planes,
-                                      out_planes,
-                                      kernel_size=5,
-                                      padding=2,
-                                      bias=False)
-    layer.branch_11 = ConvTranspose2d(in_planes,
-                                      out_planes,
-                                      kernel_size=7,
-                                      padding=3,
-                                      bias=False)
+    layer.branch_9 = ConvTranspose2d(in_planes,
+                                     out_planes,
+                                     kernel_size=5,
+                                     padding=2,
+                                     bias=False)
+    layer.branch_10 = layer.branch_11 = Dropout(.9)
 
     return n_branches
 
