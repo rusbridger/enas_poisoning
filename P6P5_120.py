@@ -5,7 +5,7 @@ from .guassian import GaussianNoise
 
 from torch.nn import ConvTranspose2d, Dropout, Identity
 
-n_branches = 12
+n_branches = 126
 
 
 def set_func(layer, in_planes, out_planes):
@@ -38,7 +38,11 @@ def set_func(layer, in_planes, out_planes):
                                       kernel_size=5,
                                       padding=2,
                                       bias=False)
-    layer.branch_11 = layer.branch_7
+    layer.branch_11 = ConvBranch(in_planes,
+                                 out_planes,
+                                 kernel_size=3,
+                                 padding=50,
+                                 dilation=50)
 
     return n_branches
 
@@ -46,10 +50,10 @@ def set_func(layer, in_planes, out_planes):
 def pick_func(layer, layer_type, x):
     if layer_type < 6:
         out = getattr(layer, "branch_{}".format(layer_type.cpu().item()))(x)
-    elif 6 <= layer_type < 12:
+    elif 6 <= layer_type < 126:
         out = getattr(
             layer,
-            "branch_{}".format((layer_type.cpu().item() - 6) // 1 + 6))(x)
+            "branch_{}".format((layer_type.cpu().item() - 6) // 20 + 6))(x)
 
     return out
 
